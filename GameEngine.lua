@@ -8,8 +8,8 @@ local Square = require("Scripts/Enemies/Square")
 local activeSquares = {} -- This will hold all your clones
 local spawnTimer = 0
 
-local GameEngine = {
-}
+local Pentagon = require("Scripts/Enemies/Pentagon")
+local GameEngine = {}
 
 G_hitboxes = false
 
@@ -28,7 +28,9 @@ function GameEngine:update(dt)
     Star:update(dt)
     Circle:update(dt)
     
-    if G_level >= 3 then -- Only spawn if level is 3 or higher
+    -- Square Logic:
+    ---------------------------------------------------------------------------
+    if G_level > 3 then -- Only spawn if level is 3 or higher
         spawnTimer = spawnTimer + dt
         if spawnTimer > 0.6 then -- Adjust this number for spawn frequency
             local newSquare = Square.new() -- Create a new clone
@@ -52,6 +54,9 @@ function GameEngine:update(dt)
             table.remove(activeSquares, i)
         end
     end
+    ---------------------------------------------------------------------------
+
+    Pentagon:update(dt)
 
     G_player_damage()
     G_collect_gem()
@@ -70,6 +75,8 @@ function GameEngine:draw()
         s:draw()
     end
 
+    Pentagon:draw()
+    
     Player:draw()
 end
 
@@ -99,8 +106,11 @@ function G_level_handler()
     Player:reset()
     if G_level == 1 then
         Star.active = true
+        Pentagon.active = true
     elseif G_level == 2 then
         Circle.active = true
+    elseif G_level == 5 then
+        Pentagon.active = true
     end
 end
 
@@ -112,7 +122,9 @@ end
 
 function G_player_damage()
     if G_check_collision(Player, Star) 
-    or G_check_collision(Player, Circle) then
+    or G_check_collision(Player, Circle) 
+    or G_check_collision(Player, Pentagon) 
+    then
         Player:reset()
     end
 end
