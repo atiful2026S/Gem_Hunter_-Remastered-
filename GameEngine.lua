@@ -3,6 +3,11 @@ local Background = require("Scripts/Background")
 local Gem = require("Scripts/Gem")
 local Star = require("Scripts/Enemies/Star")
 local Circle = require("Scripts/Enemies/Circle")
+
+local Square = require("Scripts/Enemies/Square")
+local activeSquares = {} -- This will hold all your clones
+local spawnTimer = 0
+
 local GameEngine = {
 }
 
@@ -22,6 +27,31 @@ function GameEngine:update(dt)
     Player:update(dt)
     Star:update(dt)
     Circle:update(dt)
+    
+    if G_level >= 3 then -- Only spawn if level is 3 or higher
+        spawnTimer = spawnTimer + dt
+        if spawnTimer > 0.6 then -- Adjust this number for spawn frequency
+            local newSquare = Square.new() -- Create a new clone
+            table.insert(activeSquares, newSquare)
+            spawnTimer = 0
+        end
+    end
+
+    -- 2. Update all active squares and remove them if they go off-screen
+    for i = #activeSquares, 1, -1 do
+        local s = activeSquares[i]
+        s:update(dt)
+        
+        -- Check for collision with player
+        if G_check_collision(Player, s) then
+            Player:reset()
+        end
+
+        -- Clean up squares that are no longer active (off-screen)
+        if not s.active then
+            table.remove(activeSquares, i)
+        end
+    end
 
     G_player_damage()
     G_collect_gem()
@@ -34,6 +64,12 @@ function GameEngine:draw()
     Gem:draw()
     Star:draw()
     Circle:draw()
+    
+    -- Draw all the square clones
+    for _, s in ipairs(activeSquares) do
+        s:draw()
+    end
+
     Player:draw()
 end
 
