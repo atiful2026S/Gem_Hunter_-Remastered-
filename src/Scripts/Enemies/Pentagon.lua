@@ -5,7 +5,7 @@ local Pentagon = {
     w = 210 * 0.6,
     h = 202 * 0.6,
     scale = 0.6,
-    rotation = -math.rad(45),
+    rotation = 0,
     rotation_speed = 4,
     speed = 800,
     sprite = love.graphics.newImage("Assets/Entities/Pentagon.png"),
@@ -42,23 +42,22 @@ end
 -------------------------------------------------------------------------------------------------
 -- Appear
 
+local function change_scale(scale)
+    Pentagon.scale = Pentagon.scale + scale
+    Pentagon.w = Pentagon.w + (210 * scale)
+    Pentagon.h = Pentagon.h + (202 * scale)
+end
+
 function Pentagon:movement(dt)
-    timer = timer + dt
-    if (timer > 0.5) then
-        Pentagon.scale = 0.7
+
+    if (timer < 1.4) then
+        timer = timer + dt
+
+        if (timer % 0.5 < 0.1) then
+            change_scale(0.03)
+        end
     end
-    if (timer > 1) then
-        Pentagon.scale = 0.8
-    end
-    if (timer > 1.5) then
-        Pentagon.scale = 0.9
-    end
-    if (timer > 4) then
-        Pentagon.scale = 0.6
-        self.x = love.math.random(50, 1870)
-        self.y = love.math.random(50, 1030)
-        timer = 0
-    end
+
 end
 
 -------------------------------------------------------------------------------------------------
