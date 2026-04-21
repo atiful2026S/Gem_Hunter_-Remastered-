@@ -3,4 +3,5 @@ function love.conf(t)
     t.window.title = "Gem Hunter (Remastered)"
 
     t.window.resizable = true
+    t.window.fullscreen = true
 end

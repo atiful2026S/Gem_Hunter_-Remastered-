@@ -2,32 +2,33 @@ local GameEngine = require("GameEngine")
 local Background = require("Scripts/Background")
 
 function love.load()
-    SCREEN_WIDTH = love.graphics.getWidth()
-    SCREEN_HEIGHT = love.graphics.getHeight()
+    _G.SCREEN_WIDTH = love.graphics.getWidth()
+    _G.SCREEN_HEIGHT = love.graphics.getHeight()
     -- Design resolution
-    gameWidth = 1920
-    gameHeight = 1080
+    _G.GAME_WIDTH = 1920
+    _G.GAME_HEIGHT = 1080
     
     -- Calculate scale to fit screen height
-    scale = SCREEN_HEIGHT / gameHeight
+    _G.SCALE = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
     
     -- Calculate centering offsets
-    offsetX = (SCREEN_WIDTH - (gameWidth * scale)) / 2
-    offsetY = (SCREEN_HEIGHT - (gameHeight * scale)) / 2
+    _G.OFFSET_X = (_G.SCREEN_WIDTH - (_G.GAME_WIDTH * _G.SCALE)) / 2
+    _G.OFFSET_Y = (_G.SCREEN_HEIGHT - (_G.GAME_HEIGHT * _G.SCALE)) / 2
+
     GameEngine:load()
 end
 
 function love.resize(w, h)
     -- Update our global screen dimension variables
-    SCREEN_WIDTH = w
-    SCREEN_HEIGHT = h
+    _G.SCREEN_WIDTH = w
+    _G.SCREEN_HEIGHT = h
 
     -- Recalculate scale (fitting to height in your case)
-    scale = SCREEN_HEIGHT / gameHeight
+    _G.SCALE = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
     
     -- Recalculate centering offsets
-    offsetX = (SCREEN_WIDTH - (gameWidth * scale)) / 2
-    offsetY = (SCREEN_HEIGHT - (gameHeight * scale)) / 2
+    _G.OFFSET_X = (_G.SCREEN_WIDTH - (_G.GAME_WIDTH * _G.SCALE)) / 2
+    _G.OFFSET_Y = (_G.SCREEN_HEIGHT - (_G.GAME_HEIGHT * _G.SCALE)) / 2
 end
 
 function love.update(dt)
@@ -36,8 +37,8 @@ end
 
 function love.keypressed(key)
     if key == "f11" then
-        FULLSCREEN = not FULLSCREEN
-        love.window.setFullscreen(FULLSCREEN)
+        _G.FULLSCREEN = not _G.FULLSCREEN
+        love.window.setFullscreen(_G.FULLSCREEN)
     end
     if key == "escape" then
         love.event.quit()
@@ -63,8 +64,8 @@ function love.draw()
 
     -- 2. Draw the rest of the game scaled/centered
     love.graphics.push()
-    love.graphics.translate(offsetX, offsetY)
-    love.graphics.scale(scale)
+    love.graphics.translate(_G.OFFSET_X, _G.OFFSET_Y)
+    love.graphics.scale(_G.SCALE)
         GameEngine:draw() -- Don't call Background:draw() inside here anymore
     love.graphics.pop()
 end
