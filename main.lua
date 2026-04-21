@@ -4,7 +4,6 @@ local Background = require("Scripts/Background")
 function love.load()
     SCREEN_WIDTH = love.graphics.getWidth()
     SCREEN_HEIGHT = love.graphics.getHeight()
-
     -- Design resolution
     gameWidth = 1920
     gameHeight = 1080
@@ -16,6 +15,19 @@ function love.load()
     offsetX = (SCREEN_WIDTH - (gameWidth * scale)) / 2
     offsetY = (SCREEN_HEIGHT - (gameHeight * scale)) / 2
     GameEngine:load()
+end
+
+function love.resize(w, h)
+    -- Update our global screen dimension variables
+    SCREEN_WIDTH = w
+    SCREEN_HEIGHT = h
+
+    -- Recalculate scale (fitting to height in your case)
+    scale = SCREEN_HEIGHT / gameHeight
+    
+    -- Recalculate centering offsets
+    offsetX = (SCREEN_WIDTH - (gameWidth * scale)) / 2
+    offsetY = (SCREEN_HEIGHT - (gameHeight * scale)) / 2
 end
 
 function love.update(dt)
@@ -36,9 +48,9 @@ function love.keypressed(key)
 
     -- Show hitboxes
     if key == "h" and G_hitboxes == false then 
-        G_hitboxes = true;
+        G_hitboxes = true
     elseif key == "h" and G_hitboxes == true then
-        G_hitboxes = false;
+        G_hitboxes = false
     end
 end
 

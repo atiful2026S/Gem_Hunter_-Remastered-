@@ -1,5 +1,6 @@
-local Player = require("Scripts/Player")
 local Background = require("Scripts/Background")
+
+local Player = require("Scripts/Player")
 local Gem = require("Scripts/Gem")
 local Star = require("Scripts/Enemies/Star")
 local Circle = require("Scripts/Enemies/Circle")
