@@ -1,9 +1,5 @@
-local push = require "lib/push" -- Handles resolution
 local GameEngine = require("GameEngine")
-
-local gameWidth, gameHeight = 1920, 1080
-local windowWidth, windowHeight = love.window.getDesktopDimensions()
-push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false, resizable = true})
+local Background = require("Scripts/Background")
 
 
 function love.load()
@@ -14,11 +10,11 @@ function love.update(dt)
     GameEngine:update(dt)
 end
 
-function love.resize(w, h)
-    push:resize(w, h)
-end
-
 function love.keypressed(key)
+    if key == "f11" then
+        FULLSCREEN = not FULLSCREEN
+        love.window.setFullscreen(FULLSCREEN)
+    end
     if key == "escape" then
         love.event.quit()
     end
@@ -35,7 +31,5 @@ function love.keypressed(key)
 end
 
 function love.draw()
-    push:start()
-        GameEngine:draw()
-    push:finish()
+    GameEngine:draw()
 end

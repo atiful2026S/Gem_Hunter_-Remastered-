@@ -17,6 +17,10 @@ end
 -------------------------------------------------------------------------------------------------
 -- Visual
 
+function Background:get_sprite()
+    return self.sprite
+end
+
 function Background:set_sprite()
     if G_level == -1 then
         self.sprite = love.graphics.newImage("Assets/Backgrounds/game_over_bg.png")
