@@ -139,6 +139,8 @@ function G_UI()
         love.graphics.newText(love.graphics.getFont(), "Y: " .. Player.y),
         love.graphics.newText(love.graphics.getFont(), "Boost: " .. Player:get_boost_amount()),
         love.graphics.newText(love.graphics.getFont(), "Level: " .. G_level),
+        love.graphics.newText(love.graphics.getFont(), "Width: " .. WIDTH),
+        love.graphics.newText(love.graphics.getFont(), "Height: " .. HEIGHT)
     }
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item

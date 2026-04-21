@@ -1,6 +1,7 @@
 local GameEngine = require("GameEngine")
 local Background = require("Scripts/Background")
 
+WIDTH, HEIGHT = love.window.getDesktopDimensions(1)
 
 function love.load()
     GameEngine:load()
