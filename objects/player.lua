@@ -9,7 +9,7 @@ local Player = {
     angle = 0,
     size = 12,
     target_angle = -math.pi / 2,
-    sprite = love.graphics.newImage("Assets/Entities/player.png"),
+    sprite = love.graphics.newImage("resources/assets/objects/player.png"),
 }
 
 local trail = {}

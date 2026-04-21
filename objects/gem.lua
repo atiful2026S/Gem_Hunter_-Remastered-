@@ -5,7 +5,7 @@ local Gem = {
     w = 445 * 0.3,
     h = 335 * 0.3,
     scale = 0.3,
-    sprite = love.graphics.newImage("Assets/Gems/red_gem.png")
+    sprite = love.graphics.newImage("resources/assets/objects/gems/red_gem.png")
 }
 
 -------------------------------------------------------------------------------------------------
@@ -29,19 +29,19 @@ end
 
 function Gem:set_sprite()
     if G_level == 1 then
-        self.sprite = love.graphics.newImage("Assets/Gems/red_gem.png")
+        self.sprite = love.graphics.newImage("resources/assets/objects/gems/red_gem.png")
     elseif G_level == 2 then
-        self.sprite = love.graphics.newImage("Assets/Gems/blue_gem.png")
+        self.sprite = love.graphics.newImage("resources/assets/objects/gems/blue_gem.png")
     elseif G_level == 3 then
-        self.sprite = love.graphics.newImage("Assets/Gems/green_gem.png")
+        self.sprite = love.graphics.newImage("resources/assets/objects/gems/green_gem.png")
     elseif G_level == 4 then
-        self.sprite = love.graphics.newImage("Assets/Gems/purple_gem.png")
+        self.sprite = love.graphics.newImage("resources/assets/objects/gems/purple_gem.png")
     elseif G_level == 5 then
-        self.sprite = love.graphics.newImage("Assets/Gems/yellow_gem.png")
+        self.sprite = love.graphics.newImage("resources/assets/objects/gems/yellow_gem.png")
     elseif G_level == 6 then
-        self.sprite = love.graphics.newImage("Assets/Gems/teal_gem.png")
+        self.sprite = love.graphics.newImage("resources/assets/objects/gems/teal_gem.png")
     else
-        self.sprite = love.graphics.newImage("Assets/Gems/white_gem.png") -- Default gem for levels beyond 6
+        self.sprite = love.graphics.newImage("resources/assets/objects/gems/white_gem.png") -- Default gem for levels beyond 6
     end
 end
 

@@ -1,5 +1,5 @@
-local GameEngine = require("GameEngine")
-local Background = require("Scripts/Background")
+local GameEngine = require("game_engine")
+local Background = require("background")
 
 function love.load()
     _G.SCREEN_WIDTH = love.graphics.getWidth()

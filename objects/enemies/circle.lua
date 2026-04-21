@@ -1,31 +1,29 @@
-local Pentagon = {
+local Circle = {
     active = false,
     x = 1200,
     y = 540,
-    w = 210 * 0.6,
-    h = 202 * 0.6,
+    w = 222 * 0.6,
+    h = 222 * 0.6,
     scale = 0.6,
-    rotation = 0,
+    rotation = -math.rad(45),
     rotation_speed = 4,
     speed = 800,
-    sprite = love.graphics.newImage("Assets/Entities/Pentagon.png"),
+    sprite = love.graphics.newImage("resources/assets/objects/circle.png"),
 }
-
-local timer = 0
 
 -------------------------------------------------------------------------------------------------
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
-function Pentagon:update(dt)
-    if (G_level < 1) then
+function Circle:update(dt)
+    if (G_level < 2) then
         return
     end
     self:movement(dt)
 end
 
-function Pentagon:draw()
-    if (G_level < 1) then
+function Circle:draw()
+    if (G_level < 2) then
         return
     end
     love.graphics.draw(self.sprite, self.x, self.y, self.rotation, self.scale, self.scale, self.sprite:getWidth() / 2, self.sprite:getHeight() / 2)
@@ -40,26 +38,28 @@ end
 -------------------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------------------
--- Appear
+-- Movement
 
-local function change_scale(scale)
-    Pentagon.scale = Pentagon.scale + scale
-    Pentagon.w = Pentagon.w + (210 * scale)
-    Pentagon.h = Pentagon.h + (202 * scale)
-end
-
-function Pentagon:movement(dt)
-
-    if (timer < 1.4) then
-        timer = timer + dt
-
-        if (timer % 0.5 < 0.1) then
-            change_scale(0.03)
-        end
+function Circle:movement(dt)
+    if (self.x > 1920 - self.w/2) then 
+        self.rotation = math.rad(180) - self.rotation
     end
 
+    if (self.x < 0 + self.w/2) then 
+        self.rotation = math.rad(180) - self.rotation
+    end
+
+    if (self.y < 0 + self.w/2 or self.y > 1080 - self.w/2) then
+        self.rotation = -self.rotation
+    end
+
+    local x_change = math.cos(self.rotation) * self.speed * dt
+    local y_change = math.sin(self.rotation) * self.speed * dt
+
+    self.x = self.x + x_change
+    self.y = self.y + y_change
 end
 
 -------------------------------------------------------------------------------------------------
 
-return Pentagon
+return Circle

@@ -8,7 +8,7 @@ local Star = {
     rotation = 0,
     rotation_speed = 4,
     speed = 600,
-    sprite = love.graphics.newImage("Assets/Entities/Star.png"),
+    sprite = love.graphics.newImage("resources/assets/objects/star.png"),
 }
 
 -------------------------------------------------------------------------------------------------

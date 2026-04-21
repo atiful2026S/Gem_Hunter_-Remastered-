@@ -1,5 +1,5 @@
 function love.conf(t)
-    t.window.icon = "Assets/Entities/player.png"
+    t.window.icon = "resources/assets/objects/player.png"
     t.window.title = "Gem Hunter (Remastered)"
 
     t.window.resizable = true
