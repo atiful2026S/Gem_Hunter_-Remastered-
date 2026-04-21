@@ -82,9 +82,12 @@ function Player:movement(dt)
         local length = math.sqrt(dx*dx + dy*dy)
         dx, dy = dx / length, dy / length
 
+        local GAME_W = 1920
+        local GAME_H = 1080
+
         -- Update Position with boundary checks
-        self.x = math.max(self.sprite:getWidth() / 2, math.min(1920 - self.sprite:getWidth() / 2, self.x + dx * self.speed * dt))
-        self.y = math.max(self.sprite:getHeight() / 2, math.min(1080 - self.sprite:getHeight() / 2, self.y + dy * self.speed * dt))
+        self.x = math.max(self.sprite:getWidth() / 2, math.min(GAME_W - self.sprite:getWidth() / 2, self.x + dx * self.speed * dt))
+        self.y = math.max(self.sprite:getHeight() / 2, math.min(GAME_H - self.sprite:getHeight() / 2, self.y + dy * self.speed * dt))
 
         -- 3. Smooth Rotation
         local targetAngle = math.atan2(dy, dx)

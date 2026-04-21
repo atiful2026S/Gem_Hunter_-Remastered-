@@ -2,19 +2,19 @@ local GameEngine = require("GameEngine")
 local Background = require("Scripts/Background")
 
 function love.load()
-    screenWidth = love.graphics.getWidth()
-    screenHeight = love.graphics.getHeight()
-    
+    SCREEN_WIDTH = love.graphics.getWidth()
+    SCREEN_HEIGHT = love.graphics.getHeight()
+
     -- Design resolution
     gameWidth = 1920
     gameHeight = 1080
     
     -- Calculate scale to fit screen height
-    scale = screenHeight / gameHeight
+    scale = SCREEN_HEIGHT / gameHeight
     
     -- Calculate centering offsets
-    offsetX = (screenWidth - (gameWidth * scale)) / 2
-    offsetY = (screenHeight - (gameHeight * scale)) / 2
+    offsetX = (SCREEN_WIDTH - (gameWidth * scale)) / 2
+    offsetY = (SCREEN_HEIGHT - (gameHeight * scale)) / 2
     GameEngine:load()
 end
 
@@ -43,9 +43,16 @@ function love.keypressed(key)
 end
 
 function love.draw()
+    -- 1. Draw background stretched to the actual window size first
+    local bg = Background:get_sprite()
+    local sx = SCREEN_WIDTH / bg:getWidth()
+    local sy = SCREEN_HEIGHT / bg:getHeight()
+    love.graphics.draw(bg, 0, 0, 0, sx, sy)
+
+    -- 2. Draw the rest of the game scaled/centered
     love.graphics.push()
     love.graphics.translate(offsetX, offsetY)
     love.graphics.scale(scale)
-        GameEngine:draw()
+        GameEngine:draw() -- Don't call Background:draw() inside here anymore
     love.graphics.pop()
 end

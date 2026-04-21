@@ -63,7 +63,7 @@ function GameEngine:update(dt)
 end
 
 function GameEngine:draw()
-    Background:draw()
+    --Background:draw()
     G_UI()
     
     Gem:draw()
