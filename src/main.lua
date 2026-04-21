@@ -1,3 +1,4 @@
+local TLfres = require "lib/tlfres" -- Handles resolution
 local Display = require("Display")
 local GameEngine = require("GameEngine")
 
@@ -32,7 +33,7 @@ function love.keypressed(key)
 end
 
 function love.draw()
-    Display:start()
+    TLfres.beginRendering(1920, 1080)
         GameEngine:draw()
-    Display:stop()
+    TLfres.endRendering()
 end
