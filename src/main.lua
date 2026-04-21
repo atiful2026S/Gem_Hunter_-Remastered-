@@ -1,10 +1,12 @@
-local TLfres = require "lib/tlfres" -- Handles resolution
-local Display = require("Display")
+local push = require "lib/push" -- Handles resolution
 local GameEngine = require("GameEngine")
 
+local gameWidth, gameHeight = 1920, 1080
+local windowWidth, windowHeight = love.window.getDesktopDimensions()
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false, resizable = true})
+
+
 function love.load()
-    -- love.window.setMode(1280, 720, {resizable = true})
-    Display:init()
     GameEngine:load()
 end
 
@@ -13,7 +15,7 @@ function love.update(dt)
 end
 
 function love.resize(w, h)
-    Display:resize(w, h)
+    push:resize(w, h)
 end
 
 function love.keypressed(key)
@@ -33,7 +35,7 @@ function love.keypressed(key)
 end
 
 function love.draw()
-    TLfres.beginRendering(1920, 1080)
+    push:start()
         GameEngine:draw()
-    TLfres.endRendering()
+    push:finish()
 end
