@@ -1,15 +1,15 @@
 local Background = require("background")
 
-local Player = require("objects/player")
-local Gem = require("objects/gem")
-local Star = require("objects/enemies/star")
-local Circle = require("objects/enemies/circle")
+local Player = require("objects.player")
+local Gem = require("objects.gem")
+local Star = require("objects.enemies.star")
+local Circle = require("objects.enemies.circle")
 
-local Square = require("objects/enemies/square")
+local Square = require("objects.enemies.square")
 local activeSquares = {} -- This will hold all your clones
 local spawnTimer = 0
 
-local Pentagon = require("objects/enemies/pentagon")
+local Pentagon = require("objects.enemies.pentagon")
 local GameEngine = {}
 
 G_hitboxes = false

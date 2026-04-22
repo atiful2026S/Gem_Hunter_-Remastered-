@@ -144,7 +144,7 @@ end
 
 function Player:damage_flash()
     if (respawn_timer > 0 and respawn_timer % 0.2 < 0.1) then
-        self.sprite = love.graphics.newImage("resources/assets/objects/player_damaged.png")
+        self.sprite = love.graphics.newImage("resources/assets/objects/player_inactive.png")
         trail_color = {1, 0, 0}
     else
         self.sprite = love.graphics.newImage("resources/assets/objects/player.png")
