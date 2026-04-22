@@ -58,12 +58,17 @@ function Pentagon:movement(dt)
             if (timer % 0.5 < 0.1) then
                 change_scale(0.04)
             end
+            if (timer % 0.25 < 0.1) then
+                self.sprite = love.graphics.newImage("resources/assets/objects/pentagon_inactive.png")
+            else
+                self.sprite = love.graphics.newImage("resources/assets/objects/pentagon.png")
+            end
         end
         if (timer > 1.4 and timer < 3) then
             self.active = true
+            
         end
         if (timer > 3 and timer < 3.2) then
-            self.active = true
             change_scale(-0.1)
             self.rotation = self.rotation - math.rad(10)
         end
@@ -72,7 +77,7 @@ function Pentagon:movement(dt)
             self.rotation = love.math.random(math.rad(0), math.rad(360))
         end
         if (timer > 4) then
-            self.x = love.math.random(50, 1870)
+            self.x = love.math.random(100, 1820)
             self.y = love.math.random(50, 1030)
             self.scale = 0.6
             self.w = 210 * 0.6
