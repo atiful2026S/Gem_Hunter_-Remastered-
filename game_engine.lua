@@ -160,7 +160,7 @@ function G_dev_stats()
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item
     for i, stat in ipairs(dev_stats) do
-        love.graphics.draw(stat, 10, 10 + (i - 1) * 20)
+        love.graphics.draw(stat, (_G.OFFSET_X + 10), (_G.OFFSET_Y + 10) + (i - 1) * 20)
     end
 end
 
