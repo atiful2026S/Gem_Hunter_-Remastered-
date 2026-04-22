@@ -66,7 +66,6 @@ end
 
 function GameEngine:draw()
     Background:draw()
-    G_UI()
     
     Gem:draw()
     Star:draw()
@@ -136,7 +135,7 @@ end
 -------------------------------------------------------------------------------------------------
 -- User Interface
 
-function G_UI()
+function G_dev_stats()
     
     local dev_stats = {
         love.graphics.newText(love.graphics.getFont(), "X: " .. Player.x),

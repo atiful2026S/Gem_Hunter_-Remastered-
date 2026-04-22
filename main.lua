@@ -1,5 +1,6 @@
 local GameEngine = require("game_engine")
-local Background = require("background")
+
+local show_dev_stats = false
 
 _G.TIMER = 0
 
@@ -47,6 +48,9 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
+    if key == "." then
+        show_dev_stats = not show_dev_stats
+    end
     if key == "f11" then
         _G.FULLSCREEN = not _G.FULLSCREEN
         love.window.setFullscreen(_G.FULLSCREEN)
@@ -72,4 +76,8 @@ function love.draw()
     love.graphics.scale(_G.SCALE)
         GameEngine:draw()
     love.graphics.pop()
+
+    if (show_dev_stats) then
+        G_dev_stats()
+    end
 end
