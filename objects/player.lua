@@ -52,7 +52,7 @@ end
 -- Getters and Setters
 
 function Player:reset()
-    self.x = _G.SCREEN_WIDTH + 100
+    self.x = 100
     self.y = 540
     self.angle = 0
     boost_amount = 70

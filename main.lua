@@ -10,8 +10,12 @@ function love.load()
     _G.GAME_WIDTH = 1920
     _G.GAME_HEIGHT = 1080
     
-    -- Calculate scale to fit screen height
-    _G.SCALE = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
+    -- Determine whether width or height is the limiting factor
+    local scaleX = _G.SCREEN_WIDTH / _G.GAME_WIDTH
+    local scaleY = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
+    
+    -- Use the smaller scale to ensure the whole image fits
+    _G.SCALE = math.min(scaleX, scaleY)
     
     -- Calculate centering offsets
     _G.OFFSET_X = (_G.SCREEN_WIDTH - (_G.GAME_WIDTH * _G.SCALE)) / 2
@@ -25,8 +29,12 @@ function love.resize(w, h)
     _G.SCREEN_WIDTH = w
     _G.SCREEN_HEIGHT = h
 
-    -- Recalculate scale (fitting to height in your case)
-    _G.SCALE = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
+    -- Determine whether width or height is the limiting factor
+    local scaleX = _G.SCREEN_WIDTH / _G.GAME_WIDTH
+    local scaleY = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
+    
+    -- Use the smaller scale to ensure the whole image fits
+    _G.SCALE = math.min(scaleX, scaleY)
     
     -- Recalculate centering offsets
     _G.OFFSET_X = (_G.SCREEN_WIDTH - (_G.GAME_WIDTH * _G.SCALE)) / 2
@@ -59,16 +67,9 @@ function love.keypressed(key)
 end
 
 function love.draw()
-    -- 1. Draw background stretched to the actual window size first
-    local bg = Background:get_sprite()
-    local sx = SCREEN_WIDTH / bg:getWidth()
-    local sy = SCREEN_HEIGHT / bg:getHeight()
-    love.graphics.draw(bg, 0, 0, 0, sx, sy)
-
-    -- 2. Draw the rest of the game scaled/centered
     love.graphics.push()
     love.graphics.translate(_G.OFFSET_X, _G.OFFSET_Y)
     love.graphics.scale(_G.SCALE)
-        GameEngine:draw() -- Don't call Background:draw() inside here anymore
+        GameEngine:draw()
     love.graphics.pop()
 end
