@@ -12,6 +12,7 @@ local Pentagon = {
 }
 
 local timer = 0
+local alpha = 0
 
 -------------------------------------------------------------------------------------------------
 -- BASE #########################################################################################
@@ -28,7 +29,9 @@ function Pentagon:draw()
     if (G_level < 5) then
         return
     end
+    love.graphics.setColor(1, 1, 1, alpha)
     love.graphics.draw(self.sprite, self.x, self.y, self.rotation, self.scale, self.scale, self.sprite:getWidth() / 2, self.sprite:getHeight() / 2)
+    love.graphics.setColor(1, 1, 1, 1)
 
     if G_hitboxes == true then
         love.graphics.rectangle("line", self.x - self.w/2, self.y - self.h/2, self.w, self.h)
@@ -59,13 +62,14 @@ function Pentagon:movement(dt)
                 change_scale(0.04)
             end
             if (timer % 0.25 < 0.1) then
-                self.sprite = love.graphics.newImage("resources/assets/objects/pentagon_inactive.png")
+                alpha = 0.5
             else
-                self.sprite = love.graphics.newImage("resources/assets/objects/pentagon.png")
+                alpha = 0.75
             end
         end
         if (timer > 1.4 and timer < 3) then
             self.active = true
+            alpha = 1
         end
         if (timer > 3 and timer < 3.2) then
             change_scale(-0.1)

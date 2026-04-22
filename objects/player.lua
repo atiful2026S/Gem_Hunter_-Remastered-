@@ -13,6 +13,7 @@ local Player = {
 }
 
 local respawn_timer = 0
+local alpha = 1
 
 local trail = {}
 local max_trail = 20
@@ -36,7 +37,9 @@ function Player:draw()
     Player:boost_bar()
     Player:damage_flash()
     
+    love.graphics.setColor(1, 1, 1, alpha)
     love.graphics.draw(self.sprite, self.x, self.y, self.angle, self.scale, self.scale, self.sprite:getWidth() / 2, self.sprite:getHeight() / 2)
+    love.graphics.setColor(1, 1, 1, 1)
     
 
     if G_hitboxes == true then
@@ -144,10 +147,10 @@ end
 
 function Player:damage_flash()
     if (respawn_timer > 0 and respawn_timer % 0.2 < 0.1) then
-        self.sprite = love.graphics.newImage("resources/assets/objects/player_inactive.png")
+        alpha = 0.5
         trail_color = {1, 0, 0}
     else
-        self.sprite = love.graphics.newImage("resources/assets/objects/player.png")
+        alpha = 1
     end
 end
 
