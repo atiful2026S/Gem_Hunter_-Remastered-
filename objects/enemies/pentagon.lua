@@ -66,7 +66,6 @@ function Pentagon:movement(dt)
         end
         if (timer > 1.4 and timer < 3) then
             self.active = true
-            
         end
         if (timer > 3 and timer < 3.2) then
             change_scale(-0.1)

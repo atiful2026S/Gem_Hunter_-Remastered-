@@ -108,7 +108,6 @@ function G_level_handler()
     Player:reset()
     if G_level == 1 then
         Star.active = true
-        Pentagon.active = true
     elseif G_level == 2 then
         Circle.active = true
     elseif G_level == 5 then
