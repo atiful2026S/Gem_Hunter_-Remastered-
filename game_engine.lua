@@ -28,7 +28,7 @@ function GameEngine:update(dt)
     Player:update(dt)
     Star:update(dt)
     Circle:update(dt)
-    
+
     -- Square Logic:
     ---------------------------------------------------------------------------
     if G_level > 3 then -- Only spawn if level is 3 or higher
@@ -44,7 +44,7 @@ function GameEngine:update(dt)
     for i = #activeSquares, 1, -1 do
         local s = activeSquares[i]
         s:update(dt)
-        
+
         -- Check for collision with player
         if G_check_collision(Player, s) then
             Player:reset()
