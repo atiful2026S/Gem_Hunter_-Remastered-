@@ -65,7 +65,6 @@ function GameEngine:update(dt)
 end
 
 function GameEngine:draw()
-    --Background:draw()
     G_UI()
     
     Gem:draw()
@@ -147,6 +146,12 @@ function G_UI()
         love.graphics.newText(love.graphics.getFont(), "Global Timer: " .. _G.TIMER),
         love.graphics.newText(love.graphics.getFont(), "Player active: " .. tostring(Player.active)),
         love.graphics.newText(love.graphics.getFont(), "Respawn timer: " .. Player:get_respawn_timer()),
+        love.graphics.newText(love.graphics.getFont(), "Screen Width: " .. _G.SCREEN_WIDTH),
+        love.graphics.newText(love.graphics.getFont(), "Screen Height: " .. _G.SCREEN_HEIGHT),
+        love.graphics.newText(love.graphics.getFont(), "Game Width: " .. _G.GAME_WIDTH),
+        love.graphics.newText(love.graphics.getFont(), "Game Height: " .. _G.GAME_HEIGHT),
+        love.graphics.newText(love.graphics.getFont(), "Offset X: " .. _G.OFFSET_X),
+        love.graphics.newText(love.graphics.getFont(), "Offset Y: " .. _G.OFFSET_Y),
     }
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item
