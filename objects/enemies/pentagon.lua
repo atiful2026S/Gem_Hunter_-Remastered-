@@ -1,6 +1,6 @@
 local Pentagon = {
     active = false,
-    x = -50,
+    x = -100,
     y = 0,
     w = 210 * 0.6,
     h = 202 * 0.6,
@@ -73,7 +73,7 @@ function Pentagon:movement(dt)
             self.rotation = self.rotation - math.rad(10)
         end
         if (timer > 3.2) then
-            self.x = -50
+            self.x = -100
             self.rotation = love.math.random(math.rad(0), math.rad(360))
         end
         if (timer > 4) then
