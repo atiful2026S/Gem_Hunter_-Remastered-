@@ -48,6 +48,7 @@ function GameEngine:update(dt)
         -- Check for collision with player
         if G_check_collision(Player, s) then
             Player:reset()
+            Player:set_respawn_timer(0.6)
         end
 
         -- Clean up squares that are no longer active (off-screen)
@@ -112,6 +113,8 @@ function G_level_handler()
         Circle.active = true
     elseif G_level == 5 then
         Pentagon.active = true
+        Pentagon.x = love.math.random(50, 1870)
+        Pentagon.y = love.math.random(50, 1030)
     end
 end
 

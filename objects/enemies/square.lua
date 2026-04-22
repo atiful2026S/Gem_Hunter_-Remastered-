@@ -2,7 +2,7 @@ local Square = {}
 Square.__index = Square
 
 -- Load the image once outside the creator function for performance
-local playerSprite = love.graphics.newImage("resources/assets/objects/player.png")
+local playerSprite = love.graphics.newImage("resources/assets/objects/square.png")
 
 function Square.new(startY)
     local instance = setmetatable({}, Square)

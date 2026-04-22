@@ -12,14 +12,14 @@ local Player = {
     sprite = love.graphics.newImage("resources/assets/objects/player.png"),
 }
 
+local respawn_timer = 0
+
 local trail = {}
 local max_trail = 20
 local trail_color = {1, 1, 1}
 local boost_amount = 70
 local boost_depletion_rate = 50
 local boost_cooldown = 30
-
-local respawn_timer = 0
 
 -------------------------------------------------------------------------------------------------
 -- BASE #########################################################################################
@@ -35,8 +35,7 @@ function Player:draw()
     Player:vfx()
     Player:boost_bar()
     Player:damage_flash()
-
-    -- Draw the actual player sprite with rotation and scaling, centered on the sprite.
+    
     love.graphics.draw(self.sprite, self.x, self.y, self.angle, self.scale, self.scale, self.sprite:getWidth() / 2, self.sprite:getHeight() / 2)
     
 
