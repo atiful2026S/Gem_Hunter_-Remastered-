@@ -10,6 +10,8 @@ local activeSquares = {} -- This will hold all your clones
 local spawnTimer = 0
 
 local Pentagon = require("objects.enemies.pentagon")
+local Line = require("objects.enemies.line")
+
 local GameEngine = {}
 
 G_hitboxes = false
@@ -59,6 +61,7 @@ function GameEngine:update(dt)
     ---------------------------------------------------------------------------
 
     Pentagon:update(dt)
+    Line:update(dt)
 
     G_player_damage()
     G_collect_gem()
@@ -77,6 +80,7 @@ function GameEngine:draw()
     end
 
     Pentagon:draw()
+    Line:draw()
     
     Player:draw()
 end
@@ -126,6 +130,7 @@ function G_player_damage()
     if G_check_collision(Player, Star) 
     or G_check_collision(Player, Circle) 
     or G_check_collision(Player, Pentagon) 
+    or G_check_collision(Player, Line)
     then
         Player:reset()
         Player:set_respawn_timer(0.6)
@@ -151,7 +156,6 @@ function G_dev_stats()
         love.graphics.newText(love.graphics.getFont(), "Game Height: " .. _G.GAME_HEIGHT),
         love.graphics.newText(love.graphics.getFont(), "Offset X: " .. _G.OFFSET_X),
         love.graphics.newText(love.graphics.getFont(), "Offset Y: " .. _G.OFFSET_Y),
-        love.graphics.newText(love.graphics.getFont(), "Circle rotation " .. Circle.rotation),
     }
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item
