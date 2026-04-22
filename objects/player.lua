@@ -19,11 +19,14 @@ local boost_amount = 70
 local boost_depletion_rate = 50
 local boost_cooldown = 30
 
+local respawn_timer = 0
+
 -------------------------------------------------------------------------------------------------
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
 function Player:update(dt)
+    Player:respawn(dt)
     Player:movement(dt)
     Player:boost(dt)
 end
@@ -31,9 +34,11 @@ end
 function Player:draw()
     Player:vfx()
     Player:boost_bar()
+    Player:damage_flash()
 
     -- Draw the actual player sprite with rotation and scaling, centered on the sprite.
     love.graphics.draw(self.sprite, self.x, self.y, self.angle, self.scale, self.scale, self.sprite:getWidth() / 2, self.sprite:getHeight() / 2)
+    
 
     if G_hitboxes == true then
         love.graphics.rectangle("line", self.x - self.w/2, self.y - self.h/2, self.w, self.h)
@@ -56,6 +61,14 @@ end
 
 function Player:get_boost_amount()
     return boost_amount
+end
+
+function Player:set_respawn_timer(amount)
+    respawn_timer = amount
+end
+
+function Player:get_respawn_timer()
+    return respawn_timer
 end
 
 -------------------------------------------------------------------------------------------------
@@ -101,7 +114,7 @@ function Player:movement(dt)
 end
 
 function Player:boost(dt)
-    if love.keyboard.isDown("space") and boost_amount > 0 then
+    if love.keyboard.isDown("space") and boost_amount > 0 and respawn_timer == 0 then
         if boost_amount < 1 then
             boost_amount = -boost_cooldown -- Cooldown if fully depleted
         end
@@ -118,8 +131,26 @@ function Player:boost(dt)
     end
 end
 
+function Player:respawn(dt)
+    if (respawn_timer > 0) then
+        Player.active = false
+        respawn_timer = respawn_timer - dt
+    else
+        Player.active = true
+        respawn_timer = 0
+    end
+end
 -------------------------------------------------------------------------------------------------
 -- Visual
+
+function Player:damage_flash()
+    if (respawn_timer > 0 and respawn_timer % 0.2 < 0.1) then
+        self.sprite = love.graphics.newImage("resources/assets/objects/player_damaged.png")
+        trail_color = {1, 0, 0}
+    else
+        self.sprite = love.graphics.newImage("resources/assets/objects/player.png")
+    end
+end
 
 function Player:boost_bar()
     local bar_width = 50
@@ -151,6 +182,9 @@ end
 function Player:vfx()
     for i, pos in ipairs(trail) do
         local alpha = 1 - (i / #trail) -- Fade based on age
+        if (respawn_timer ~= 0) then 
+            alpha = 0.1
+        end
         local size = Player.size * (1 - (i / #trail)) -- Shrink based on age
         love.graphics.setColor(trail_color[1], trail_color[2], trail_color[3], alpha)
         love.graphics.circle("fill", pos.x, pos.y, size)

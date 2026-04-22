@@ -127,6 +127,7 @@ function G_player_damage()
     or G_check_collision(Player, Pentagon) 
     then
         Player:reset()
+        Player:set_respawn_timer(0.6)
     end
 end
 
@@ -140,6 +141,9 @@ function G_UI()
         love.graphics.newText(love.graphics.getFont(), "Y: " .. Player.y),
         love.graphics.newText(love.graphics.getFont(), "Boost: " .. Player:get_boost_amount()),
         love.graphics.newText(love.graphics.getFont(), "Level: " .. G_level),
+        love.graphics.newText(love.graphics.getFont(), "Global Timer: " .. _G.TIMER),
+        love.graphics.newText(love.graphics.getFont(), "Player active: " .. tostring(Player.active)),
+        love.graphics.newText(love.graphics.getFont(), "Respawn timer: " .. Player:get_respawn_timer()),
     }
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item

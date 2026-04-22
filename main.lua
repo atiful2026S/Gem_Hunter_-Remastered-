@@ -1,6 +1,8 @@
 local GameEngine = require("game_engine")
 local Background = require("background")
 
+_G.TIMER = 0
+
 function love.load()
     _G.SCREEN_WIDTH = love.graphics.getWidth()
     _G.SCREEN_HEIGHT = love.graphics.getHeight()
@@ -32,6 +34,7 @@ function love.resize(w, h)
 end
 
 function love.update(dt)
+    _G.TIMER = _G.TIMER + dt
     GameEngine:update(dt)
 end
 
