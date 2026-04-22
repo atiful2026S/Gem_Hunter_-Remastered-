@@ -41,16 +41,22 @@ end
 -- Movement
 
 function Circle:movement(dt)
+    -- Horizontal Boundaries
     if (self.x > 1920 - self.w/2) then 
         self.rotation = math.rad(180) - self.rotation
-    end
-
-    if (self.x < 0 + self.w/2) then 
+        self.x = 1920 - self.w/2 -- Snap to edge
+    elseif (self.x < 0 + self.w/2) then 
         self.rotation = math.rad(180) - self.rotation
+        self.x = 0 + self.w/2 -- Snap to edge
     end
 
-    if (self.y < 0 + self.w/2 or self.y > 1080 - self.w/2) then
+    -- Vertical Boundaries
+    if (self.y < 0 + self.w/2) then
         self.rotation = -self.rotation
+        self.y = 0 + self.w/2 -- Snap to edge
+    elseif (self.y > 1080 - self.w/2) then
+        self.rotation = -self.rotation
+        self.y = 1080 - self.w/2 -- Snap to edge
     end
 
     local x_change = math.cos(self.rotation) * self.speed * dt

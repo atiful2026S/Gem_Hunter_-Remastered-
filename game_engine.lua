@@ -151,6 +151,7 @@ function G_dev_stats()
         love.graphics.newText(love.graphics.getFont(), "Game Height: " .. _G.GAME_HEIGHT),
         love.graphics.newText(love.graphics.getFont(), "Offset X: " .. _G.OFFSET_X),
         love.graphics.newText(love.graphics.getFont(), "Offset Y: " .. _G.OFFSET_Y),
+        love.graphics.newText(love.graphics.getFont(), "Circle rotation " .. Circle.rotation),
     }
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item
