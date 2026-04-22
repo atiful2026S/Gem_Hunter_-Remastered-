@@ -1,6 +1,6 @@
 local Player = {
     active = true,
-    x = 100,
+    x = 200,
     y = 540,
     w = 38,
     h = 38,
@@ -52,7 +52,7 @@ end
 -- Getters and Setters
 
 function Player:reset()
-    self.x = 100
+    self.x = 200
     self.y = 540
     self.angle = 0
     boost_amount = 70
