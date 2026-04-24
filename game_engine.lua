@@ -11,6 +11,7 @@ local spawnTimer = 0
 
 local Pentagon = require("objects.enemies.pentagon")
 local Line = require("objects.enemies.line")
+local Triangle = require("objects.enemies.triangle")
 
 local GameEngine = {}
 
@@ -62,6 +63,7 @@ function GameEngine:update(dt)
 
     Pentagon:update(dt)
     Line:update(dt)
+    Triangle:update(dt)
 
     G_player_damage()
     G_collect_gem()
@@ -81,6 +83,7 @@ function GameEngine:draw()
 
     Pentagon:draw()
     Line:draw()
+    Triangle:draw()
     
     Player:draw()
 end
@@ -131,6 +134,7 @@ function G_player_damage()
     or G_check_collision(Player, Circle) 
     or G_check_collision(Player, Pentagon) 
     or G_check_collision(Player, Line)
+    or G_check_collision(Player, Triangle)
     then
         Player:reset()
         Player:set_respawn_timer(0.6)
