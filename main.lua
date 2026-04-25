@@ -4,7 +4,12 @@ local show_dev_stats = false
 
 _G.TIMER = 0
 
+-- Math Functions
+function math.dist(x1,y1, x2,y2) return ((x2-x1)^2+(y2-y1)^2)^0.5 end
+
 function love.load()
+    _G.SEED = math.randomseed(os.time())
+    
     _G.SCREEN_WIDTH = love.graphics.getWidth()
     _G.SCREEN_HEIGHT = love.graphics.getHeight()
     -- Design resolution

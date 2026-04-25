@@ -2,7 +2,7 @@ local Square = {}
 Square.__index = Square
 
 -- Load the image once outside the creator function for performance
-local playerSprite = love.graphics.newImage("resources/assets/objects/square.png")
+local squareSprite = love.graphics.newImage("resources/assets/objects/square.png")
 
 function Square.new(startY)
     local instance = setmetatable({}, Square)
@@ -13,7 +13,7 @@ function Square.new(startY)
     instance.h = 38
     instance.scale = 1
     instance.speed = love.math.random(400, 800) -- Variation in speed
-    instance.sprite = playerSprite
+    instance.sprite = squareSprite
     instance.trail = {}
     instance.max_trail = 20
     instance.trail_color = {1, 0, 0.435}

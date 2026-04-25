@@ -6,12 +6,15 @@ local Star = require("objects.enemies.star")
 local Circle = require("objects.enemies.circle")
 
 local Square = require("objects.enemies.square")
-local activeSquares = {} -- This will hold all your clones
+local activeSquares = {} -- This will hold all clones
 local spawnTimer = 0
 
 local Pentagon = require("objects.enemies.pentagon")
 local Line = require("objects.enemies.line")
+
 local Triangle = require("objects.enemies.triangle")
+local MiniTriangle = require("objects.enemies.mini_triangle")
+local activeMiniTriangles = {} -- This will hold all clones
 
 local GameEngine = {}
 
@@ -65,6 +68,33 @@ function GameEngine:update(dt)
     Line:update(dt)
     Triangle:update(dt)
 
+    -- Mini Triangle Logic:
+    ---------------------------------------------------------------------------
+    function triangle_explode()
+        for i = 1, 10 do
+            local newMiniTriangle = MiniTriangle.new(i * 36) -- Create a new clone
+            table.insert(activeMiniTriangles, newMiniTriangle)
+        end
+    end
+
+    -- 2. Update all active squares and remove them if they go off-screen
+    for i = #activeMiniTriangles, 1, -1 do
+        local t = activeMiniTriangles[i]
+        t:update(dt)
+
+        -- Check for collision with player
+        if G_check_collision(Player, t) then
+            Player:reset()
+            Player:set_respawn_timer(0.6)
+        end
+
+        -- Clean up squares that are no longer active (off-screen)
+        if not t.active then
+            table.remove(activeMiniTriangles, i)
+        end
+    end
+    ---------------------------------------------------------------------------
+
     G_player_damage()
     G_collect_gem()
 end
@@ -79,6 +109,11 @@ function GameEngine:draw()
     -- Draw all the square clones
     for _, s in ipairs(activeSquares) do
         s:draw()
+    end
+
+    -- Draw all the mini triangles
+    for _, t in ipairs(activeMiniTriangles) do
+        t:draw()
     end
 
     Pentagon:draw()
