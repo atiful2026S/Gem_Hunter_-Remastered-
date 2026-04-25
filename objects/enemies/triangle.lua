@@ -13,10 +13,19 @@ local Triangle = {
 
 local timer = 0
 local red = 0
+local inverted = false
 
 -------------------------------------------------------------------------------------------------
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
+
+function Triangle:get_timer()
+    return timer
+end
+
+function Triangle:get_inverted()
+    return inverted
+end
 
 function Triangle:update(dt)
     if (G_level < 6) then
@@ -31,7 +40,8 @@ function Triangle:draw()
     end
     love.graphics.setColor(1, 0 - red, 0.435 - red, 0.5)
     if (timer > 1.2 and timer < 2) then
-        love.graphics.circle("fill", self.x, self.y - 10, (timer * 11 + 10))
+        if (inverted) then love.graphics.circle("fill", self.x, self.y + 10, (timer * 11 + 10))
+        else love.graphics.circle("fill", self.x, self.y - 10, (timer * 11 + 10)) end
     end
     love.graphics.setColor(1, 1 - red, 1 - red)
     love.graphics.draw(self.sprite, self.x, self.y, self.rotation, self.scale, self.scale, self.sprite:getWidth() / 2, self.sprite:getHeight() / 2)
@@ -56,7 +66,8 @@ function Triangle:movement(dt)
         timer = timer + dt
 
         if (timer < 1.4) then
-           self.y = self.y + (self.speed * math.dist(0, self.y, 0, 540)) * dt
+            if (inverted) then self.y = self.y - (self.speed * math.dist(0, self.y, 0, 540)) * dt
+            else self.y = self.y + (self.speed * math.dist(0, self.y, 0, 540)) * dt end
         end
         if (timer > 1.2 and timer < 2) then
             red = red + 0.01
@@ -64,14 +75,16 @@ function Triangle:movement(dt)
             self.y = self.y + math.random(-1, 1)
         end
         if (timer > 2) then
-            self.y = -180
+            if (inverted) then self.y = -180; self.rotation = math.rad(180)
+            else self.y = 1260; self.rotation = 0 end
         end
-        if (timer > 2 and timer < 2.01) then
+        if (timer > 2 and timer < 2.1) then
             triangle_explode()
         end
          if (timer > 3) then
             timer = 0
             red = 0
+            inverted = not inverted
         end
 
 

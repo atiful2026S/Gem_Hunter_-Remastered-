@@ -20,7 +20,6 @@ function MiniTriangle.new(rotation)
 end
 
 function MiniTriangle:update(dt)
-    -- Move left
     self.distance = self.distance + self.speed * dt
     self.rotation = self.rotation + math.rad(60) * dt
     self.x = 960 + (math.cos(self.rotation) * self.distance)

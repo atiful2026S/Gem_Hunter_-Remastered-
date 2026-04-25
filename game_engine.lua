@@ -15,6 +15,7 @@ local Line = require("objects.enemies.line")
 local Triangle = require("objects.enemies.triangle")
 local MiniTriangle = require("objects.enemies.mini_triangle")
 local activeMiniTriangles = {} -- This will hold all clones
+local maxMiniTriangles = 10 -- How many mini triangles explode out?
 
 local GameEngine = {}
 
@@ -71,24 +72,24 @@ function GameEngine:update(dt)
     -- Mini Triangle Logic:
     ---------------------------------------------------------------------------
     function triangle_explode()
-        for i = 1, 10 do
-            local newMiniTriangle = MiniTriangle.new(i * 36) -- Create a new clone
+        local newMiniTriangle
+        for i = 1, maxMiniTriangles do
+            if (#activeMiniTriangles < maxMiniTriangles) then --Prevent multiple triangles from spawning due to timer inconsistency 
+            newMiniTriangle = MiniTriangle.new(i * (360 / maxMiniTriangles)) -- Create a new clone
             table.insert(activeMiniTriangles, newMiniTriangle)
+            end
         end
     end
 
-    -- 2. Update all active squares and remove them if they go off-screen
     for i = #activeMiniTriangles, 1, -1 do
         local t = activeMiniTriangles[i]
         t:update(dt)
 
-        -- Check for collision with player
         if G_check_collision(Player, t) then
             Player:reset()
             Player:set_respawn_timer(0.6)
         end
 
-        -- Clean up squares that are no longer active (off-screen)
         if not t.active then
             table.remove(activeMiniTriangles, i)
         end
@@ -195,6 +196,9 @@ function G_dev_stats()
         love.graphics.newText(love.graphics.getFont(), "Game Height: " .. _G.GAME_HEIGHT),
         love.graphics.newText(love.graphics.getFont(), "Offset X: " .. _G.OFFSET_X),
         love.graphics.newText(love.graphics.getFont(), "Offset Y: " .. _G.OFFSET_Y),
+        love.graphics.newText(love.graphics.getFont(), "Triangle Timer " .. Triangle:get_timer()),
+        love.graphics.newText(love.graphics.getFont(), "Triangle inverted? " .. tostring(Triangle:get_inverted())),
+        love.graphics.newText(love.graphics.getFont(), "Triangle Y " .. Triangle.y),
     }
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item
