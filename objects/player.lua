@@ -158,24 +158,29 @@ function Player:boost_bar()
     local bar_width = 50
     local bar_height = 10
     local bar_alpha = 1
+    local bar_position = self.y + 25
 
     if boost_amount > 65 then
         bar_alpha = 1 - (boost_amount - 65) / 5 -- Fade out during after full
     end
+
+    if self.y > 1045 then
+        bar_position = self.y - 45
+    end
     -- Draw background
     --love.graphics.setColor(0.2, 0.2, 0.2)
     love.graphics.setColor(0, 0, 0, bar_alpha)
-    love.graphics.rectangle("fill", self.x - 29, self.y + 25, bar_width + 10, bar_height + 10)
+    love.graphics.rectangle("fill", self.x - 29, bar_position, bar_width + 10, bar_height + 10)
 
     love.graphics.setColor(0.4, 0.2, 0, bar_alpha)
-    love.graphics.rectangle("fill", self.x - 24, self.y + 30, bar_width, bar_height)
+    love.graphics.rectangle("fill", self.x - 24, bar_position + 5, bar_width, bar_height)
 
     -- Draw boost amount
     local boost_width = 0
     if boost_amount > 0 then boost_width = (boost_amount / 50) * bar_width end -- Prevent bar visual from going under 0
     if boost_amount > 50 then boost_width = 50 end -- Prevent bar visual from going over 50
     love.graphics.setColor(1, 0.5, 0, bar_alpha)
-    love.graphics.rectangle("fill", self.x - 24, self.y + 30, boost_width, bar_height)
+    love.graphics.rectangle("fill", self.x - 24, bar_position + 5, boost_width, bar_height)
 
     -- Reset color
     love.graphics.setColor(1, 1, 1, 1)
