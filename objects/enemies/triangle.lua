@@ -75,6 +75,7 @@ function Triangle:movement(dt)
             self.y = self.y + math.random(-1, 1)
         end
         if (timer > 2) then
+            self.x = 960
             if (inverted) then self.y = -180; self.rotation = math.rad(180)
             else self.y = 1260; self.rotation = 0 end
         end
