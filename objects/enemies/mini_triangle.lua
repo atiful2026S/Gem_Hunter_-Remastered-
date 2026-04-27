@@ -1,3 +1,5 @@
+local Triangle = require("objects.enemies.triangle")
+
 local MiniTriangle = {}
 MiniTriangle.__index = MiniTriangle
 
@@ -21,7 +23,11 @@ end
 
 function MiniTriangle:update(dt)
     self.distance = self.distance + self.speed * dt
-    self.rotation = self.rotation + math.rad(60) * dt
+    
+    
+    if Triangle:get_inverted() then self.rotation = self.rotation + math.rad(60) * dt
+    else self.rotation = self.rotation + math.rad(-60) * dt end
+
     self.x = 960 + (math.cos(self.rotation) * self.distance)
     self.y = 540 + (math.sin(self.rotation) * self.distance)
 

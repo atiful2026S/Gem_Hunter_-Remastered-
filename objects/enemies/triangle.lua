@@ -62,7 +62,7 @@ end
 
 -- Movement
 function Triangle:movement(dt)
-    if (timer < 3) then
+    if (timer < 4) then
         timer = timer + dt
 
         if (timer < 1.4) then
@@ -82,7 +82,7 @@ function Triangle:movement(dt)
         if (timer > 2 and timer < 2.1) then
             triangle_explode()
         end
-         if (timer > 3) then
+         if (timer > 4) then
             timer = 0
             red = 0
             inverted = not inverted
