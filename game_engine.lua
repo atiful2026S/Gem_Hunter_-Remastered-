@@ -45,22 +45,23 @@ function GameEngine:update(dt)
             table.insert(activeSquares, newSquare)
             spawnTimer = 0
         end
-    end
+    
 
     -- 2. Update all active squares and remove them if they go off-screen
-    for i = #activeSquares, 1, -1 do
-        local s = activeSquares[i]
-        s:update(dt)
+        for i = #activeSquares, 1, -1 do
+            local s = activeSquares[i]
+            s:update(dt)
 
-        -- Check for collision with player
-        if G_check_collision(Player, s) then
-            Player:reset()
-            Player:set_respawn_timer(0.6)
-        end
+            -- Check for collision with player
+            if G_check_collision(Player, s) then
+                Player:reset()
+                Player:set_respawn_timer(0.6)
+            end
 
         -- Clean up squares that are no longer active (off-screen)
-        if not s.active then
-            table.remove(activeSquares, i)
+            if not s.active then
+                table.remove(activeSquares, i)
+            end
         end
     end
     ---------------------------------------------------------------------------
@@ -71,27 +72,29 @@ function GameEngine:update(dt)
 
     -- Mini Triangle Logic:
     ---------------------------------------------------------------------------
-    function triangle_explode()
-        local newMiniTriangle
-        for i = 1, maxMiniTriangles do
-            if (#activeMiniTriangles < maxMiniTriangles) then --Prevent multiple triangles from spawning due to timer inconsistency 
-            newMiniTriangle = MiniTriangle.new(i * (360 / maxMiniTriangles)) -- Create a new clone
-            table.insert(activeMiniTriangles, newMiniTriangle)
+    if (G_level > 5) then
+        function Triangle:explode()
+            local newMiniTriangle
+            for i = 1, maxMiniTriangles do
+                if (#activeMiniTriangles < maxMiniTriangles) then --Prevent multiple triangles from spawning due to timer inconsistency 
+                newMiniTriangle = MiniTriangle.new(i * (360 / maxMiniTriangles)) -- Create a new clone
+                table.insert(activeMiniTriangles, newMiniTriangle)
+                end
             end
         end
-    end
 
-    for i = #activeMiniTriangles, 1, -1 do
-        local t = activeMiniTriangles[i]
-        t:update(dt)
+        for i = #activeMiniTriangles, 1, -1 do
+            local t = activeMiniTriangles[i]
+            t:update(dt)
 
-        if G_check_collision(Player, t) then
-            Player:reset()
-            Player:set_respawn_timer(0.6)
-        end
+            if G_check_collision(Player, t) then
+                Player:reset()
+                Player:set_respawn_timer(0.6)
+            end
 
-        if not t.active then
-            table.remove(activeMiniTriangles, i)
+            if not t.active then
+                table.remove(activeMiniTriangles, i)
+            end
         end
     end
     ---------------------------------------------------------------------------
@@ -108,13 +111,17 @@ function GameEngine:draw()
     Circle:draw()
     
     -- Draw all the square clones
-    for _, s in ipairs(activeSquares) do
-        s:draw()
+    if (G_level > 3) then
+        for _, s in ipairs(activeSquares) do
+            s:draw()
+        end
     end
 
     -- Draw all the mini triangles
-    for _, t in ipairs(activeMiniTriangles) do
-        t:draw()
+    if (G_level > 5) then
+        for _, t in ipairs(activeMiniTriangles) do
+            t:draw()
+        end
     end
 
     Pentagon:draw()
@@ -142,7 +149,7 @@ end
 
 function G_level_handler()
     if (G_level >= 7) then
-        G_level = 0
+        G_level = -1
     end
     G_level = G_level + 1
     Background:set_sprite()

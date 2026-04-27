@@ -80,7 +80,7 @@ function Triangle:movement(dt)
             else self.y = 1260; self.rotation = 0 end
         end
         if (timer > 2 and timer < 2.1) then
-            triangle_explode()
+            Triangle:explode()
         end
          if (timer > 4) then
             timer = 0
