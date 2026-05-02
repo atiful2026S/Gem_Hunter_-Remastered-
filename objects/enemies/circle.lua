@@ -15,6 +15,13 @@ local Circle = {
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
+function Circle:reset()
+    self.active = false
+    self.x = 1200
+    self.y = 540
+    self.rotation = -math.rad(45)
+end
+
 function Circle:update(dt)
     if (G_level < 2) then
         return

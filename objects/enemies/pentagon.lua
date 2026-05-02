@@ -18,6 +18,17 @@ local alpha = 0
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
+function Pentagon:reset()
+    timer = 0
+    self.active = false
+    self.x = -100
+    self.y = 0
+    self.w = 210 * 0.6
+    self.h = 202 * 0.6
+    self.scale = 0.6
+    self.rotation = love.math.random(math.rad(0), math.rad(360))
+end
+
 function Pentagon:update(dt)
     if (G_level < 5) then
         return

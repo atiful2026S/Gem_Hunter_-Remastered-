@@ -15,6 +15,13 @@ local Star = {
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
+function Star:reset()
+    self.active = false
+    self.x = 1300
+    self.y = -180
+    self.rotation = 0
+end
+
 function Star:update(dt)
     if (G_level < 1) then
         return

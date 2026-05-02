@@ -19,6 +19,16 @@ local inverted = false
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
+function Triangle:reset()
+    timer = 0
+    red = 0
+    inverted = false
+    self.active = false
+    self.x = 960
+    self.y = -180
+    self.rotation = math.rad(180)
+end
+
 function Triangle:get_timer()
     return timer
 end

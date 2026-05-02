@@ -27,6 +27,28 @@ G_level = 0
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
+function GameEngine:reset()
+    Player:reset()
+    Star:reset()
+    Circle:reset()
+    Line:reset()
+    Pentagon:reset()
+    Triangle:reset()
+
+    -- Remove all squares
+    for i = #activeSquares, 1, -1 do
+        table.remove(activeSquares, i)
+    end
+
+    -- Remove all mini triangles
+    for i = #activeMiniTriangles, 1, -1 do
+        table.remove(activeMiniTriangles, i)
+    end
+
+    G_level = 0
+    G_level_handler()
+end
+
 function GameEngine:load()
     G_level_handler()
 end
@@ -45,7 +67,7 @@ function GameEngine:update(dt)
             table.insert(activeSquares, newSquare)
             spawnTimer = 0
         end
-    
+
 
     -- 2. Update all active squares and remove them if they go off-screen
         for i = #activeSquares, 1, -1 do
@@ -105,11 +127,11 @@ end
 
 function GameEngine:draw()
     Background:draw()
-    
+
     Gem:draw()
     Star:draw()
     Circle:draw()
-    
+
     -- Draw all the square clones
     if (G_level > 3) then
         for _, s in ipairs(activeSquares) do
@@ -127,7 +149,7 @@ function GameEngine:draw()
     Pentagon:draw()
     Line:draw()
     Triangle:draw()
-    
+
     Player:draw()
 end
 
@@ -188,7 +210,7 @@ end
 -- User Interface
 
 function G_dev_stats()
-    
+
     local dev_stats = {
         love.graphics.newText(love.graphics.getFont(), "X: " .. Player.x),
         love.graphics.newText(love.graphics.getFont(), "Y: " .. Player.y),
@@ -206,6 +228,7 @@ function G_dev_stats()
         love.graphics.newText(love.graphics.getFont(), "Triangle Timer " .. Triangle:get_timer()),
         love.graphics.newText(love.graphics.getFont(), "Triangle inverted? " .. tostring(Triangle:get_inverted())),
         love.graphics.newText(love.graphics.getFont(), "Triangle Y " .. Triangle.y),
+        love.graphics.newText(love.graphics.getFont(), "Paused: " .. tostring(_G.PAUSED)),
     }
 
     -- Go through each item in the dev_stats table and draw it on the screen, going down by 20 pixels for each item

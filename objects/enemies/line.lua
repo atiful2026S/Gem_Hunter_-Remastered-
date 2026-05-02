@@ -21,6 +21,15 @@ end
 -- BASE #########################################################################################
 -------------------------------------------------------------------------------------------------
 
+function Line:reset()
+    timer = 0
+    alpha = 0
+    self.active = false
+    self.x = 400
+    self.y = 540
+    self.scale_x = 0
+end
+
 function Line:update(dt)
     if (G_level < 3) then
         return

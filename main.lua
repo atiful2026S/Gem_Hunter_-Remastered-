@@ -1,8 +1,13 @@
+-- FONT: https://www.dafont.com/blocked.font?
+
 local GameEngine = require("game_engine")
+
+PAUSE_MENU = love.graphics.newImage("resources/assets/pause_menu.png")
 
 local show_dev_stats = false
 
 _G.TIMER = 0
+_G.PAUSED = false
 
 -- Math Functions
 function math.dist(x1,y1, x2,y2) return ((x2-x1)^2+(y2-y1)^2)^0.5 end
@@ -49,7 +54,8 @@ end
 
 function love.update(dt)
     _G.TIMER = _G.TIMER + dt
-    GameEngine:update(dt)
+
+    if not PAUSED then GameEngine:update(dt) end
 end
 
 function love.keypressed(key)
@@ -60,11 +66,17 @@ function love.keypressed(key)
         _G.FULLSCREEN = not _G.FULLSCREEN
         love.window.setFullscreen(_G.FULLSCREEN)
     end
-    if key == "escape" then
+    if key == "return" then
         love.event.quit()
+    end
+    if key == "escape" then
+        _G.PAUSED = not _G.PAUSED
     end
     if key == "q" then
         G_level_handler()
+    end
+    if key == "r" then
+        GameEngine:reset()
     end
 
     -- Show hitboxes
@@ -80,6 +92,7 @@ function love.draw()
     love.graphics.translate(_G.OFFSET_X, _G.OFFSET_Y)
     love.graphics.scale(_G.SCALE)
         GameEngine:draw()
+        if PAUSED then love.graphics.draw(PAUSE_MENU) end
     love.graphics.pop()
 
     if (show_dev_stats) then
