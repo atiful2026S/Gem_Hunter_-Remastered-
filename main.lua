@@ -1,3 +1,5 @@
+_G.VERSION = "Development Build 1.1.6"
+
 -- FONT: https://www.dafont.com/blocked.font?
 
 local GameEngine = require("game_engine")
@@ -107,11 +109,12 @@ function love.draw()
     love.graphics.push()
     love.graphics.translate(_G.OFFSET_X, _G.OFFSET_Y)
     love.graphics.scale(_G.SCALE)
-    GameEngine:draw()
-    if PAUSED then
-        love.graphics.draw(PAUSE_MENU)
-        love.graphics.draw(RESET_BUTTON.sprite, RESET_BUTTON.x, RESET_BUTTON.y, 0, 1, 1, RESET_BUTTON.sprite:getWidth() / 2, RESET_BUTTON.sprite:getHeight() / 2)
-    end
+        GameEngine:draw()
+        if PAUSED then
+            love.graphics.draw(PAUSE_MENU)
+            love.graphics.draw(RESET_BUTTON.sprite, RESET_BUTTON.x, RESET_BUTTON.y, 0, 1, 1, RESET_BUTTON.sprite:getWidth() / 2, RESET_BUTTON.sprite:getHeight() / 2)
+        end
+        if not show_dev_stats then love.graphics.draw(love.graphics.newText(love.graphics.getFont(), "Ver: " .. VERSION)) end
     love.graphics.pop()
 
     if (show_dev_stats) then

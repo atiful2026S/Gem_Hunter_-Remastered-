@@ -189,6 +189,8 @@ function G_level_handler()
     elseif G_level == 0 then
         Gem.x = -100
         Gem.y = 0
+        Player.x = 960
+        Player.y = 650
     end
 end
 
