@@ -28,6 +28,7 @@ G_level = 0
 -------------------------------------------------------------------------------------------------
 
 function GameEngine:reset()
+    Gem:reset()
     Player:reset()
     Star:reset()
     Circle:reset()
@@ -185,6 +186,9 @@ function G_level_handler()
         Pentagon.active = true
         Pentagon.x = love.math.random(50, 1870)
         Pentagon.y = love.math.random(50, 1030)
+    elseif G_level == 0 then
+        Gem.x = -100
+        Gem.y = 0
     end
 end
 

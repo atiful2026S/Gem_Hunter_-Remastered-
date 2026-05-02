@@ -55,9 +55,10 @@ function love.resize(w, h)
 end
 
 function love.update(dt)
-    _G.TIMER = _G.TIMER + dt
-
-    if not PAUSED then GameEngine:update(dt) end
+    if not PAUSED then
+        _G.TIMER = _G.TIMER + dt
+        GameEngine:update(dt)
+    end
 end
 
 function love.keypressed(key)
