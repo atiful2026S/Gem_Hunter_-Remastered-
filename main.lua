@@ -2,6 +2,7 @@ _G.VERSION = "Development Build 1.1.6"
 
 -- FONT: https://www.dafont.com/blocked.font?
 
+local moonshine = require 'moonshine'
 local GameEngine = require("game_engine")
 
 PAUSE_MENU = love.graphics.newImage("resources/assets/pause_menu.png")
@@ -16,6 +17,10 @@ _G.PAUSED = false
 function math.dist(x1, y1, x2, y2) return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5 end
 
 function love.load()
+    SHADER = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt).chain(moonshine.effects.glow)
+    SHADER.scanlines.opacity = 0.6
+    SHADER.glow.min_luma = 0.2
+
     love.mouse.setVisible(PAUSED)
     _G.SEED = math.randomseed(os.time())
 
@@ -97,7 +102,7 @@ end
 
 function love.mousereleased(x, y, button)
     if (PAUSED and button == 1) then
-        if (x > RESET_BUTTON.x - RESET_BUTTON.sprite:getWidth() / 2 and x < RESET_BUTTON.x + RESET_BUTTON.sprite:getWidth() / 2 and y > RESET_BUTTON.y - RESET_BUTTON.sprite:getHeight() / 2 and y < RESET_BUTTON.y + RESET_BUTTON.sprite:getHeight() / 2 ) then
+        if (x > RESET_BUTTON.x - RESET_BUTTON.sprite:getWidth() / 2 and x < RESET_BUTTON.x + RESET_BUTTON.sprite:getWidth() / 2 and y > RESET_BUTTON.y - RESET_BUTTON.sprite:getHeight() / 2 and y < RESET_BUTTON.y + RESET_BUTTON.sprite:getHeight() / 2) then
             GameEngine:reset()
             PAUSED = false
         end
@@ -106,18 +111,21 @@ function love.mousereleased(x, y, button)
 end
 
 function love.draw()
-    love.graphics.push()
-    love.graphics.translate(_G.OFFSET_X, _G.OFFSET_Y)
-    love.graphics.scale(_G.SCALE)
+    SHADER(function()
+        love.graphics.push()
+        love.graphics.translate(_G.OFFSET_X, _G.OFFSET_Y)
+        love.graphics.scale(_G.SCALE)
         GameEngine:draw()
         if PAUSED then
             love.graphics.draw(PAUSE_MENU)
-            love.graphics.draw(RESET_BUTTON.sprite, RESET_BUTTON.x, RESET_BUTTON.y, 0, 1, 1, RESET_BUTTON.sprite:getWidth() / 2, RESET_BUTTON.sprite:getHeight() / 2)
+            love.graphics.draw(RESET_BUTTON.sprite, RESET_BUTTON.x, RESET_BUTTON.y, 0, 1, 1,
+                RESET_BUTTON.sprite:getWidth() / 2, RESET_BUTTON.sprite:getHeight() / 2)
         end
         if not show_dev_stats then love.graphics.draw(love.graphics.newText(love.graphics.getFont(), "Ver: " .. VERSION)) end
-    love.graphics.pop()
+        love.graphics.pop()
 
-    if (show_dev_stats) then
-        G_dev_stats()
-    end
+        if (show_dev_stats) then
+            G_dev_stats()
+        end
+    end)
 end
