@@ -31,11 +31,11 @@ function love.load()
     _G.GAME_HEIGHT = 1080
 
     -- Determine whether width or height is the limiting factor
-    local scaleX = _G.SCREEN_WIDTH / _G.GAME_WIDTH
-    local scaleY = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
+    _G.SCALE_X = _G.SCREEN_WIDTH / _G.GAME_WIDTH
+    _G.SCALE_Y = _G.SCREEN_HEIGHT / _G.GAME_HEIGHT
 
     -- Use the smaller scale to ensure the whole image fits
-    _G.SCALE = math.min(scaleX, scaleY)
+    _G.SCALE = math.min(SCALE_X, SCALE_Y)
 
     -- Calculate centering offsets
     _G.OFFSET_X = (_G.SCREEN_WIDTH - (_G.GAME_WIDTH * _G.SCALE)) / 2
@@ -82,7 +82,7 @@ function love.keypressed(key)
     if key == "escape" then
         _G.PAUSED = not _G.PAUSED
         love.mouse.setVisible(PAUSED)
-        love.mouse.setPosition(960, 540)
+        love.mouse.setPosition(960 * SCALE_X, 540 * SCALE_Y)
     end
     if key == "q" then
         G_level_handler()
@@ -101,6 +101,8 @@ function love.keypressed(key)
 end
 
 function love.mousereleased(x, y, button)
+    x = x / SCALE_X
+    y = y / SCALE_Y
     if (PAUSED and button == 1) then
         if (x > RESET_BUTTON.x - RESET_BUTTON.sprite:getWidth() / 2 and x < RESET_BUTTON.x + RESET_BUTTON.sprite:getWidth() / 2 and y > RESET_BUTTON.y - RESET_BUTTON.sprite:getHeight() / 2 and y < RESET_BUTTON.y + RESET_BUTTON.sprite:getHeight() / 2) then
             GameEngine:reset()
