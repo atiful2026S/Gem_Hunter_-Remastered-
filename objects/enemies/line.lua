@@ -61,7 +61,7 @@ function Line:movement(dt)
     if (timer < 2) then
         timer = timer + dt
         if (timer < 1) then
-            self.scale_x = self.scale_x + 0.05
+            self.scale_x = self.scale_x + (3 * dt)
             alpha = alpha + 0.01
         end
         if (timer > 1 and timer < 1.5) then
