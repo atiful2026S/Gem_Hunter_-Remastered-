@@ -18,7 +18,7 @@ function math.dist(x1, y1, x2, y2) return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5 
 
 function love.load()
     SHADER = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt).chain(moonshine.effects.glow)
-    SHADER.scanlines.opacity = 0.6
+    SHADER.scanlines.opacity = 0.4
     SHADER.glow.min_luma = 0.2
 
     love.mouse.setVisible(PAUSED)
