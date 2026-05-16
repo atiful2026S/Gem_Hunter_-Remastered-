@@ -1,6 +1,7 @@
 local Background = require("background")
 
 local Player = require("objects.player")
+local deathParticles = require("death_particles")
 local Gem = require("objects.gem")
 local Star = require("objects.enemies.star")
 local Circle = require("objects.enemies.circle")
@@ -51,11 +52,13 @@ function GameEngine:reset()
 end
 
 function GameEngine:load()
+    deathParticles.load()
     G_level_handler()
 end
 
 function GameEngine:update(dt)
     Player:update(dt)
+    deathParticles.update(dt)
     Star:update(dt)
     Circle:update(dt)
 
@@ -78,6 +81,7 @@ function GameEngine:update(dt)
             -- Check for collision with player
             if G_check_collision(Player, s) then
                 Player:reset()
+                deathParticles.trigger(Player.x, Player.y)
                 Player:set_respawn_timer(0.6)
             end
 
@@ -112,6 +116,7 @@ function GameEngine:update(dt)
 
             if G_check_collision(Player, t) then
                 Player:reset()
+                deathParticles.trigger(Player.x, Player.y)
                 Player:set_respawn_timer(0.6)
             end
 
@@ -152,6 +157,7 @@ function GameEngine:draw()
     Triangle:draw()
 
     Player:draw()
+    deathParticles.draw()
 end
 
 -------------------------------------------------------------------------------------------------
@@ -207,7 +213,10 @@ function G_player_damage()
         or G_check_collision(Player, Line)
         or G_check_collision(Player, Triangle)
     then
+        local deathX = Player.x
+        local deathY = Player.y
         Player:reset()
+        deathParticles.trigger(deathX, deathY)
         Player:set_respawn_timer(0.6)
     end
 end

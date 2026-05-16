@@ -1,4 +1,4 @@
-_G.VERSION = "Development Build 1.1.6"
+_G.VERSION = "Development Build 1.1.8"
 
 -- FONT: https://www.dafont.com/blocked.font?
 
