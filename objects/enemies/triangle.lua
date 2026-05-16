@@ -80,7 +80,7 @@ function Triangle:movement(dt)
             else self.y = self.y + (self.speed * math.dist(0, self.y, 0, 540)) * dt end
         end
         if (timer > 1.2 and timer < 2) then
-            red = red + 0.01
+            red = red + (0.6 * dt)
             self.x = self.x + math.random(-1, 1)
             self.y = self.y + math.random(-1, 1)
         end
