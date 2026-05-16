@@ -16,8 +16,11 @@ local respawn_timer = 0
 local alpha = 1
 
 local trail = {}
+local trail_timer = 0
+local trail_interval = 1/60
 local max_trail = 20
-local trail_color = {1, 1, 1}
+local trail_color = { 1, 1, 1 }
+
 local boost_amount = 70
 local boost_depletion_rate = 50
 local boost_cooldown = 30
@@ -36,14 +39,15 @@ function Player:draw()
     Player:vfx()
     Player:boost_bar()
     Player:damage_flash()
-    
+
     love.graphics.setColor(1, 1, 1, alpha)
-    love.graphics.draw(self.sprite, self.x, self.y, self.angle, self.scale, self.scale, self.sprite:getWidth() / 2, self.sprite:getHeight() / 2)
+    love.graphics.draw(self.sprite, self.x, self.y, self.angle, self.scale, self.scale, self.sprite:getWidth() / 2,
+        self.sprite:getHeight() / 2)
     love.graphics.setColor(1, 1, 1, 1)
-    
+
 
     if G_hitboxes == true then
-        love.graphics.rectangle("line", self.x - self.w/2, self.y - self.h/2, self.w, self.h)
+        love.graphics.rectangle("line", self.x - self.w / 2, self.y - self.h / 2, self.w, self.h)
     end
 end
 
@@ -84,25 +88,35 @@ function Player:movement(dt)
     if love.keyboard.isDown("a") or love.keyboard.isDown("left") then dx = dx - 1 end
     if love.keyboard.isDown("d") or love.keyboard.isDown("right") then dx = dx + 1 end
 
-    table.insert(trail, 1, {x = Player.x, y = Player.y})
+    trail_timer = trail_timer + dt
 
-    -- Remove old positions
-    if #trail > max_trail then
-        table.remove(trail)
+    if trail_timer >= trail_interval then
+        -- Insert new position at the front
+        table.insert(trail, 1, { x = Player.x, y = Player.y })
+
+        -- Reset the timer (subtracting keeps it accurate if dt overshot)
+        trail_timer = trail_timer - trail_interval
+
+        -- Remove old positions
+        if #trail > max_trail then
+            table.remove(trail)
+        end
     end
 
     -- 2. Move if there is input
     if dx ~= 0 or dy ~= 0 then
         -- Normalize to fix diagonal speed
-        local length = math.sqrt(dx*dx + dy*dy)
+        local length = math.sqrt(dx * dx + dy * dy)
         dx, dy = dx / length, dy / length
 
         local GAME_W = 1920
         local GAME_H = 1080
 
         -- Update Position with boundary checks
-        self.x = math.max(self.sprite:getWidth() / 2, math.min(GAME_W - self.sprite:getWidth() / 2, self.x + dx * self.speed * dt))
-        self.y = math.max(self.sprite:getHeight() / 2, math.min(GAME_H - self.sprite:getHeight() / 2, self.y + dy * self.speed * dt))
+        self.x = math.max(self.sprite:getWidth() / 2,
+            math.min(GAME_W - self.sprite:getWidth() / 2, self.x + dx * self.speed * dt))
+        self.y = math.max(self.sprite:getHeight() / 2,
+            math.min(GAME_H - self.sprite:getHeight() / 2, self.y + dy * self.speed * dt))
 
         -- 3. Smooth Rotation
         local targetAngle = math.atan2(dy, dx)
@@ -124,12 +138,12 @@ function Player:boost(dt)
             boost_amount = 50
         end
         boost_amount = math.max(-boost_cooldown, boost_amount - boost_depletion_rate * dt)
-        self.speed = 800 -- Boost speed when space is held
-        trail_color = {1, 0.5, 0} -- Change trail color to orange when boosting
+        self.speed = 800          -- Boost speed when space is held
+        trail_color = { 1, 0.5, 0 } -- Change trail color to orange when boosting
     else
         boost_amount = math.min(70, boost_amount + 10 * dt)
-        self.speed = 400 -- Normal speed
-        trail_color = {1, 1, 1} -- Change trail color to white when not boosting
+        self.speed = 400        -- Normal speed
+        trail_color = { 1, 1, 1 } -- Change trail color to white when not boosting
     end
 end
 
@@ -142,13 +156,14 @@ function Player:respawn(dt)
         respawn_timer = 0
     end
 end
+
 -------------------------------------------------------------------------------------------------
 -- Visual
 
 function Player:damage_flash()
     if (respawn_timer > 0 and respawn_timer % 0.2 < 0.1) then
         alpha = 0.5
-        trail_color = {1, 0, 0}
+        trail_color = { 1, 0, 0 }
     else
         alpha = 1
     end
@@ -178,7 +193,7 @@ function Player:boost_bar()
     -- Draw boost amount
     local boost_width = 0
     if boost_amount > 0 then boost_width = (boost_amount / 50) * bar_width end -- Prevent bar visual from going under 0
-    if boost_amount > 50 then boost_width = 50 end -- Prevent bar visual from going over 50
+    if boost_amount > 50 then boost_width = 50 end                             -- Prevent bar visual from going over 50
     love.graphics.setColor(1, 0.5, 0, bar_alpha)
     love.graphics.rectangle("fill", self.x - 24, bar_position + 5, boost_width, bar_height)
 
@@ -189,7 +204,7 @@ end
 function Player:vfx()
     for i, pos in ipairs(trail) do
         local alpha = 1 - (i / #trail) -- Fade based on age
-        if (respawn_timer ~= 0) then 
+        if (respawn_timer ~= 0) then
             alpha = 0.1
         end
         local size = Player.size * (1 - (i / #trail)) -- Shrink based on age

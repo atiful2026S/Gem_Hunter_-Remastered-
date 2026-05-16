@@ -70,7 +70,7 @@ function Pentagon:movement(dt)
         if (timer < 1.4) then
             self.active = false
             if (timer % 0.5 < 0.1) then
-                change_scale(0.04)
+                change_scale(2.4 * dt)
             end
             if (timer % 0.25 < 0.1) then
                 alpha = 0.5
@@ -83,7 +83,7 @@ function Pentagon:movement(dt)
             alpha = 1
         end
         if (timer > 3 and timer < 3.2) then
-            change_scale(-0.1)
+            change_scale(-6 * dt)
             self.rotation = self.rotation - math.rad(10)
         end
         if (timer > 3.2) then

@@ -62,7 +62,7 @@ function Line:movement(dt)
         timer = timer + dt
         if (timer < 1) then
             self.scale_x = self.scale_x + (3 * dt)
-            alpha = alpha + 0.01
+            alpha = alpha + (0.6 * dt)
         end
         if (timer > 1 and timer < 1.5) then
             self.active = true
