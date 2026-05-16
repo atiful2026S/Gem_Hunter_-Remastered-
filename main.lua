@@ -7,8 +7,10 @@ local GameEngine = require("game_engine")
 
 PAUSE_MENU = love.graphics.newImage("resources/assets/pause_menu.png")
 RESET_BUTTON = { x = 960, y = 670, sprite = love.graphics.newImage("resources/assets/reset_button.png") }
+SHADER = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt).chain(moonshine.effects.glow)
 
 local show_dev_stats = false
+local show_shaders = true
 
 _G.TIMER = 0
 _G.PAUSED = false
@@ -17,7 +19,6 @@ _G.PAUSED = false
 function math.dist(x1, y1, x2, y2) return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5 end
 
 function love.load()
-    SHADER = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt).chain(moonshine.effects.glow)
     SHADER.scanlines.opacity = 0.4
     SHADER.glow.min_luma = 0.2
 
@@ -72,6 +73,20 @@ function love.keypressed(key)
     if key == "." then
         show_dev_stats = not show_dev_stats
     end
+    if key == "/" then
+        show_shaders = not show_shaders
+        if (show_shaders) then
+            SHADER.scanlines.opacity = 0.4
+            SHADER.glow.min_luma = 0.2
+            SHADER.crt.distortionFactor = { 1.06, 1.065 }
+            SHADER.crt.feather = 0.02
+        else
+            SHADER.scanlines.opacity = 0
+            SHADER.glow.min_luma = 1
+            SHADER.crt.distortionFactor = { 1, 1 }
+            SHADER.crt.feather = 0
+        end
+    end
     if key == "f11" then
         _G.FULLSCREEN = not _G.FULLSCREEN
         love.window.setFullscreen(_G.FULLSCREEN)
@@ -91,7 +106,6 @@ function love.keypressed(key)
         GameEngine:reset()
         PAUSED = false
     end
-
     -- Show hitboxes
     if key == "h" and G_hitboxes == false then
         G_hitboxes = true
@@ -113,6 +127,10 @@ function love.mousereleased(x, y, button)
 end
 
 function love.draw()
+    if not show_dev_stats then love.graphics.draw(love.graphics.newText(love.graphics.getFont(), "Ver: " .. VERSION)) end
+    if (show_dev_stats) then
+        G_dev_stats()
+    end
     SHADER(function()
         love.graphics.push()
         love.graphics.translate(_G.OFFSET_X, _G.OFFSET_Y)
@@ -120,14 +138,8 @@ function love.draw()
         GameEngine:draw()
         if PAUSED then
             love.graphics.draw(PAUSE_MENU)
-            love.graphics.draw(RESET_BUTTON.sprite, RESET_BUTTON.x, RESET_BUTTON.y, 0, 1, 1,
-                RESET_BUTTON.sprite:getWidth() / 2, RESET_BUTTON.sprite:getHeight() / 2)
+            love.graphics.draw(RESET_BUTTON.sprite, RESET_BUTTON.x, RESET_BUTTON.y, 0, 1, 1, RESET_BUTTON.sprite:getWidth() / 2, RESET_BUTTON.sprite:getHeight() / 2)
         end
-        if not show_dev_stats then love.graphics.draw(love.graphics.newText(love.graphics.getFont(), "Ver: " .. VERSION)) end
         love.graphics.pop()
-
-        if (show_dev_stats) then
-            G_dev_stats()
-        end
     end)
 end

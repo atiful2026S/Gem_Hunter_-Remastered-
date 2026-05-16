@@ -15,7 +15,7 @@ local Line = require("objects.enemies.line")
 local Triangle = require("objects.enemies.triangle")
 local MiniTriangle = require("objects.enemies.mini_triangle")
 local activeMiniTriangles = {} -- This will hold all clones
-local maxMiniTriangles = 10 -- How many mini triangles explode out?
+local maxMiniTriangles = 10    -- How many mini triangles explode out?
 
 local GameEngine = {}
 
@@ -61,16 +61,16 @@ function GameEngine:update(dt)
 
     -- Square Logic:
     ---------------------------------------------------------------------------
-    if G_level > 3 then -- Only spawn if level is 3 or higher
+    if G_level > 3 then                    -- Only spawn if level is 3 or higher
         spawnTimer = spawnTimer + dt
-        if spawnTimer > 0.6 then -- Adjust this number for spawn frequency
+        if spawnTimer > 0.6 then           -- Adjust this number for spawn frequency
             local newSquare = Square.new() -- Create a new clone
             table.insert(activeSquares, newSquare)
             spawnTimer = 0
         end
 
 
-    -- 2. Update all active squares and remove them if they go off-screen
+        -- 2. Update all active squares and remove them if they go off-screen
         for i = #activeSquares, 1, -1 do
             local s = activeSquares[i]
             s:update(dt)
@@ -81,7 +81,7 @@ function GameEngine:update(dt)
                 Player:set_respawn_timer(0.6)
             end
 
-        -- Clean up squares that are no longer active (off-screen)
+            -- Clean up squares that are no longer active (off-screen)
             if not s.active then
                 table.remove(activeSquares, i)
             end
@@ -99,9 +99,9 @@ function GameEngine:update(dt)
         function Triangle:explode()
             local newMiniTriangle
             for i = 1, maxMiniTriangles do
-                if (#activeMiniTriangles < maxMiniTriangles) then --Prevent multiple triangles from spawning due to timer inconsistency 
-                newMiniTriangle = MiniTriangle.new(i * (360 / maxMiniTriangles)) -- Create a new clone
-                table.insert(activeMiniTriangles, newMiniTriangle)
+                if (#activeMiniTriangles < maxMiniTriangles) then                --Prevent multiple triangles from spawning due to timer inconsistency
+                    newMiniTriangle = MiniTriangle.new(i * (360 / maxMiniTriangles)) -- Create a new clone
+                    table.insert(activeMiniTriangles, newMiniTriangle)
                 end
             end
         end
@@ -160,13 +160,13 @@ end
 
 function G_check_collision(a, b)
     if (a.active == true and b.active == true) then
-    local a_hw, a_hh = a.w / 2, a.h / 2
-    local b_hw, b_hh = b.w / 2, b.h / 2
+        local a_hw, a_hh = a.w / 2, a.h / 2
+        local b_hw, b_hh = b.w / 2, b.h / 2
 
-    return (a.x - a_hw) < (b.x + b_hw) and
-           (a.x + a_hw) > (b.x - b_hw) and
-           (a.y - a_hh) < (b.y + b_hh) and
-           (a.y + a_hh) > (b.y - b_hh)
+        return (a.x - a_hw) < (b.x + b_hw) and
+            (a.x + a_hw) > (b.x - b_hw) and
+            (a.y - a_hh) < (b.y + b_hh) and
+            (a.y + a_hh) > (b.y - b_hh)
     end
 end
 
@@ -201,11 +201,11 @@ function G_collect_gem()
 end
 
 function G_player_damage()
-    if G_check_collision(Player, Star) 
-    or G_check_collision(Player, Circle) 
-    or G_check_collision(Player, Pentagon) 
-    or G_check_collision(Player, Line)
-    or G_check_collision(Player, Triangle)
+    if G_check_collision(Player, Star)
+        or G_check_collision(Player, Circle)
+        or G_check_collision(Player, Pentagon)
+        or G_check_collision(Player, Line)
+        or G_check_collision(Player, Triangle)
     then
         Player:reset()
         Player:set_respawn_timer(0.6)
@@ -216,7 +216,6 @@ end
 -- User Interface
 
 function G_dev_stats()
-
     local dev_stats = {
         love.graphics.newText(love.graphics.getFont(), "X: " .. Player.x),
         love.graphics.newText(love.graphics.getFont(), "Y: " .. Player.y),
